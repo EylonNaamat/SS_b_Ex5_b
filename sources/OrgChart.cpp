@@ -367,7 +367,7 @@ namespace ariel{
         str += node->name;
         str += "\n";
         for(int i = 0; i < node->subs.size(); ++i){
-             OrgChart::helper(str, prefix + "\t", node->subs[(uint)i]);
+            OrgChart::helper(str, prefix + "\t", node->subs[(uint)i]);
         }
         return str;
     }
