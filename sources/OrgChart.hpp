@@ -27,73 +27,77 @@ namespace ariel{
             this->root = nullptr;
         }
 
-//        OrgChart(OrgChart& org){
-//            deleteOrg();
-//            copy(org);
-//        }
+        OrgChart(OrgChart& org){
+            deleteOrg(this->root);
+            copy(org);
+        }
 
-//        OrgChart(OrgChart&& org) noexcept{
-//            this->root = org.root;
-//            org.root = nullptr;
-//        }
+        OrgChart(OrgChart&& org) noexcept{
+            this->root = org.root;
+            deleteOrg(org.root);
+            org.root = nullptr;
+        }
 
-//        ~OrgChart(){
-//            deleteOrg();
-//        }
 
-//        void deleteOrg(){
-//            if(this->root != nullptr){
-//                for(Iterator_Level_Order itr = this->begin_level_order(); itr != OrgChart::end_level_order(); ++itr){
-//                    Node* tmp = itr.get_ptr();
-//                    delete tmp;
-//                }
-//            }
-//        }
+        ~OrgChart(){
+            deleteOrg(this->root);
+            this->root = nullptr;
+        }
 
-//        OrgChart& operator=(const OrgChart& org){
-//            if(this != &org){
-//                deleteOrg();
-//                copy(org);
-//            }
-//            return *this;
-//        }
+        void deleteOrg(Node* node){
+            if(node == nullptr){
+                return;
+            }
+            for(int i = 0; i < node->subs.size(); ++i){
+                deleteOrg(node->subs[(uint)i]);
+            }
+            delete node;
+        }
 
-//        OrgChart& operator=(OrgChart&& org)noexcept{
-//            this->root = org.root;
-//            org.root = nullptr;
-//            return *this;
-//        }
-//
-//        void copy(const OrgChart& org){
-//            if(org.root != nullptr){
-//                this->root = new Node(org.root->name);
-//                copy_helper(this->root, org.root);
-//            }
-//        }
-//
-//        void copy_helper(Node* curr, Node* from){
-//            for(uint i = 0; i < from->subs.size(); ++i){
-//                Node* new_node = new Node(from->subs[i]->name);
-//                curr->subs.push_back(new_node);
-//                copy_helper(curr->subs[i], from->subs[i]);
-//            }
-//        }
+        OrgChart& operator=(const OrgChart& org){
+            if(this != &org){
+                deleteOrg(this->root);
+                copy(org);
+            }
+            return *this;
+        }
+
+        OrgChart& operator=(OrgChart&& org)noexcept{
+            this->root = org.root;
+            deleteOrg(org.root);
+            org.root = nullptr;
+            return *this;
+        }
+
+        void copy(const OrgChart& org){
+            if(org.root != nullptr){
+                this->root = new Node(org.root->name);
+                copy_helper(this->root, org.root);
+            }
+        }
+
+        void copy_helper(Node* curr, Node* from){
+            for(int i = 0; i < from->subs.size(); ++i){
+                Node* new_node = new Node(from->subs[(uint)i]->name);
+                curr->subs.push_back(new_node);
+                copy_helper(curr->subs[(uint)i], from->subs[(uint)i]);
+            }
+        }
 
         /* iterator class which all the 3 iterators will inherit from */
         class Iterator{
             public:
                 Node* _ptr;
-                std::string&  operator*();
-                bool operator!=(const Iterator& itr);
-                std::string* operator->();
-                Node* get_ptr();
+                std::string&  operator*() const;
+                bool operator!=(const Iterator& itr) const;
+                std::string* operator->() const;
+                Node* get_ptr() const;
         };
 
         /* level order iterator */
         /* this iterator inherits from Iterator and has a queue which orders all the nodes in the organization in level order */
         class Iterator_Level_Order : public Iterator{
             private:
-                std::queue<Node*> q_tmp;
                 std::queue<Node*> q;
             public:
                 /* the constructor gets a pointer to a node and fills the queue in the level order */
@@ -103,25 +107,13 @@ namespace ariel{
                  * and then inserting all his child into the first queue
                  */
                 Iterator_Level_Order(Node* ptr): Iterator(){
-                    if(!this->q_tmp.empty()){
-                        while(!this->q_tmp.empty()){
-                            this->q_tmp.pop();
-                        }
-                    }
                     if(ptr == nullptr){
-                        this->_ptr = ptr;
+                        this->_ptr = nullptr;
                     }else{
-                        this->q_tmp.push(ptr);
-                        while(!this->q_tmp.empty()){
-                            Node* tmp = this->q_tmp.front();
-                            this->q.push(tmp);
-                            this->q_tmp.pop();
-                            for(int i = 0; i < tmp->subs.size(); ++i){
-                                this->q_tmp.push(tmp->subs[(uint)i]);
-                            }
-                        }
+                        this->q.push(ptr);
                         this->_ptr = this->q.front();
                     }
+
                 }
                 Iterator_Level_Order& operator++();
                 Iterator_Level_Order operator++(int);
@@ -222,6 +214,6 @@ namespace ariel{
 
 
         friend std::ostream& operator<<(std::ostream& os, OrgChart& org);
-        static std::string& helper(std::string& str, std::string prefix, OrgChart::Node* node);
+        static std::string& helper(std::string& str, const std::string& prefix, OrgChart::Node* node);
     };
 };

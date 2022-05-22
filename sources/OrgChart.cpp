@@ -9,14 +9,14 @@ namespace ariel{
      * implementation of * operator
      * return the nodes name
      */
-    std::string&  OrgChart::Iterator::operator*(){
+    std::string&  OrgChart::Iterator::operator*() const{
         return this->_ptr->name;
     }
 
     /*
      * implementation of != operator if the pointers arent the same return true, else false
      */
-    bool OrgChart::Iterator::operator!=(const Iterator& itr){
+    bool OrgChart::Iterator::operator!=(const Iterator& itr) const{
         bool ans = false;
         if(this->_ptr != itr._ptr){
             ans = true;
@@ -28,7 +28,7 @@ namespace ariel{
      * this function implements the -> operator, return the address of the nodes name
      * @return
      */
-    std::string* OrgChart::Iterator::operator->(){
+    std::string* OrgChart::Iterator::operator->() const{
         return &(this->_ptr->name);
     }
 
@@ -36,7 +36,7 @@ namespace ariel{
      * this function is a getter for the pointer in Iterator
      * @return
      */
-    OrgChart::Node* OrgChart::Iterator::get_ptr(){
+    OrgChart::Node* OrgChart::Iterator::get_ptr() const{
         return this->_ptr;
     }
 
@@ -51,7 +51,11 @@ namespace ariel{
         if(this->q.empty()){
             this->_ptr = nullptr;
         }else{
+            Node* tmp = this->q.front();
             this->q.pop();
+            for(int i = 0; i < tmp->subs.size(); ++i){
+                this->q.push(tmp->subs[(uint)i]);
+            }
             if(this->q.empty()){
                 this->_ptr = nullptr;
             }else{
@@ -75,7 +79,11 @@ namespace ariel{
         if(this->q.empty()){
             this->_ptr = nullptr;
         }else{
+            Node* tmp = this->q.front();
             this->q.pop();
+            for(int i = 0; i < tmp->subs.size(); ++i){
+                this->q.push(tmp->subs[(uint)i]);
+            }
             if(this->q.empty()){
                 this->_ptr = nullptr;
             }else{
@@ -329,7 +337,7 @@ namespace ariel{
         if(org.root == nullptr){
             throw "org is empty!!!";
         }
-        std::string str = "";
+        std::string str;
         os << OrgChart::helper(str, "", org.root);
         return os;
     }
@@ -351,9 +359,9 @@ namespace ariel{
      * @param node
      * @return
      */
-    std::string& OrgChart::helper(std::string& str, std::string prefix, OrgChart::Node* node){
+    std::string& OrgChart::helper(std::string& str, const std::string& prefix, OrgChart::Node* node){
         str += prefix;
-        if(str.size() != 0){
+        if(!str.empty()){
             str += "-";
         }
         str += node->name;
