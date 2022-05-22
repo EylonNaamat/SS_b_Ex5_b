@@ -40,6 +40,10 @@ namespace ariel{
         return this->_ptr;
     }
 
+    /* ******************** */
+    /* Level_Order_Iterator */
+    /* ******************** */
+
     /**
      * this function if the prefix++
      * in this function we first check if the q is empty, if so the pointer is nullptr
@@ -93,6 +97,10 @@ namespace ariel{
         return itr;
     }
 
+    /* ********************** */
+    /* Reverse_Order_Iterator */
+    /* ********************** */
+
     /**
      * his function if the prefix++
      * in this function we first check if the stack is empty, if so the pointer is nullptr
@@ -137,6 +145,10 @@ namespace ariel{
         }
         return itr;
     }
+
+    /* ***************** */
+    /* PreOrder_Iterator */
+    /* ***************** */
 
     /**
      * this is the prefix++
@@ -194,6 +206,10 @@ namespace ariel{
         }
         return itr;
     }
+
+    /* *********** */
+    /* Begin / End */
+    /* *********** */
 
     /**
      * this function tells the iterator where to begin, we send root to level order iterator
@@ -283,6 +299,10 @@ namespace ariel{
         return OrgChart::Iterator_Preorder(nullptr);
     }
 
+    /* ****************** */
+    /* OrgChart Functions */
+    /* ****************** */
+
     /**
      * this function adds a root to the organization
      * if the root is nullptr it means that the organization is empty, so we create a new node with the name we got
@@ -292,6 +312,9 @@ namespace ariel{
      * @return
      */
     OrgChart& OrgChart::add_root(const std::string& name){
+        if(name.empty()){
+            throw "cant have empty name";
+        }
         if(this->root != nullptr){
             this->root->name = name;
         }else{
@@ -310,6 +333,9 @@ namespace ariel{
      * @return
      */
     OrgChart& OrgChart::add_sub(const std::string& father, const std::string& name){
+        if(name.empty()){
+            throw "cant have empty name";
+        }
         OrgChart::Node* tmp = nullptr;
         for(auto itr = this->begin(); itr != OrgChart::end(); ++itr){
             if((*itr) == father){
