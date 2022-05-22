@@ -27,11 +27,13 @@ namespace ariel{
             this->root = nullptr;
         }
 
+        /* copy constructor, delete the original OrgChart and then copies the other organization */
         OrgChart(OrgChart& org){
             deleteOrg(this->root);
             copy(org);
         }
 
+        /* moving constructor */
         OrgChart(OrgChart&& org) noexcept{
             this->root = org.root;
             deleteOrg(org.root);
@@ -39,11 +41,13 @@ namespace ariel{
         }
 
 
+        /* destructor, deletes the original organization and sets the root to nullptr */
         ~OrgChart(){
             deleteOrg(this->root);
             this->root = nullptr;
         }
 
+        /* this function gets a node and deletes all his children and him */
         void deleteOrg(Node* node){
             if(node == nullptr){
                 return;
@@ -54,6 +58,7 @@ namespace ariel{
             delete node;
         }
 
+        /* operator= if the org isnt null, delete the original org and copy the other to it */
         OrgChart& operator=(const OrgChart& org){
             if(this != &org){
                 deleteOrg(this->root);
@@ -62,6 +67,7 @@ namespace ariel{
             return *this;
         }
 
+        /* moving operator= */
         OrgChart& operator=(OrgChart&& org)noexcept{
             this->root = org.root;
             deleteOrg(org.root);
@@ -69,6 +75,7 @@ namespace ariel{
             return *this;
         }
 
+        /* this function gets an organization and copies it to current organization */
         void copy(const OrgChart& org){
             if(org.root != nullptr){
                 this->root = new Node(org.root->name);
@@ -76,6 +83,7 @@ namespace ariel{
             }
         }
 
+        /* this function gets two nodes and copies it */
         void copy_helper(Node* curr, Node* from){
             for(int i = 0; i < from->subs.size(); ++i){
                 Node* new_node = new Node(from->subs[(uint)i]->name);
