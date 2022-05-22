@@ -312,7 +312,7 @@ namespace ariel{
      * @return
      */
     OrgChart& OrgChart::add_root(const std::string& name){
-        if(name.empty()){
+        if(name.empty() || name == "\n" || name == "\t" || name == "\r"){
             throw "cant have empty name";
         }
         if(this->root != nullptr){
@@ -333,7 +333,7 @@ namespace ariel{
      * @return
      */
     OrgChart& OrgChart::add_sub(const std::string& father, const std::string& name){
-        if(name.empty()){
+        if(name.empty() || name == "\n" || name == "\t" || name == "\r"){
             throw "cant have empty name";
         }
         OrgChart::Node* tmp = nullptr;
