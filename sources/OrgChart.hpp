@@ -29,8 +29,10 @@ namespace ariel{
 
         /* copy constructor, delete the original OrgChart and then copies the other organization */
         OrgChart(OrgChart& org){
-            deleteOrg(this->root);
-            copy(org);
+            if(this != &org) {
+                deleteOrg(this->root);
+                copy(org);
+            }
         }
 
         /* moving constructor */
@@ -69,9 +71,11 @@ namespace ariel{
 
         /* moving operator= */
         OrgChart& operator=(OrgChart&& org)noexcept{
-            this->root = org.root;
-            deleteOrg(org.root);
-            org.root = nullptr;
+            if(this != &org) {
+                this->root = org.root;
+                deleteOrg(org.root);
+                org.root = nullptr;
+            }
             return *this;
         }
 

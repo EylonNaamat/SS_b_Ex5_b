@@ -38,7 +38,11 @@ int main(){
         std::string son = "";
         std::cout << "Enter Root" << std::endl;
         std::cin >> root;
-        org2.add_root(root);
+        try{
+            org2.add_root(root);
+        }catch(...){
+            std::cout << "Invalid Input" << std::endl;
+        }
         while(father != "no"){
             std::cout << "Enter Father" << std::endl;
             std::cin >> father;
@@ -48,7 +52,7 @@ int main(){
                 try{
                     org2.add_sub(father, son);
                 }catch(...) {
-                    std::cout << "Father Dont Exist" << std::endl;
+                    std::cout << "Invalid Input" << std::endl;
                 }
             }
         }
@@ -70,7 +74,11 @@ int main(){
                     std::string new_root = "";
                     std::cout << "Enter Root" << std::endl;
                     std::cin >> new_root;
-                    org.add_root(new_root);
+                    try{
+                        org.add_root(new_root);
+                    }catch(...){
+                        std::cout << "Invalid Input" << std::endl;
+                    }
                     std::cout << org << std::endl;
                 }else if(command == "add_sub"){
                     std::string new_father = "";
@@ -83,7 +91,7 @@ int main(){
                         org.add_sub(new_father, new_son);
                         std::cout << org << std::endl;
                     }catch(...){
-                        std::cout << "Father Dont Exist" << std::endl;
+                        std::cout << "Invalid Input" << std::endl;
                     }
                 }else if(command == "*"){
                     for(auto itr = org.begin_level_order(); itr != org.end_level_order(); ++itr){
@@ -118,7 +126,11 @@ int main(){
                     std::string new_root = "";
                     std::cout << "Enter Root" << std::endl;
                     std::cin >> new_root;
-                    org.add_root(new_root);
+                    try{
+                        org.add_root(new_root);
+                    }catch(...){
+                        std::cout << "Invalid Input" << std::endl;
+                    }
                     std::cout << org << std::endl;
                 }else if(command == "add_sub"){
                     std::string new_father = "";
@@ -131,7 +143,7 @@ int main(){
                         org.add_sub(new_father, new_son);
                         std::cout << org << std::endl;
                     }catch(...){
-                        std::cout << "Father Dont Exist" << std::endl;
+                        std::cout << "Invalid Input" << std::endl;
                     }
                 }else if(command == "*"){
                     for(auto itr = org.begin_reverse_order(); itr != org.reverse_order(); ++itr){
@@ -166,7 +178,11 @@ int main(){
                     std::string new_root = "";
                     std::cout << "Enter Root" << std::endl;
                     std::cin >> new_root;
-                    org.add_root(new_root);
+                    try{
+                        org.add_root(new_root);
+                    }catch(...){
+                        std::cout << "Invalid Input" << std::endl;
+                    }
                     std::cout << org << std::endl;
                 }else if(command == "add_sub"){
                     std::string new_father = "";
@@ -179,7 +195,7 @@ int main(){
                         org.add_sub(new_father, new_son);
                         std::cout << org << std::endl;
                     }catch(...){
-                        std::cout << "Father Dont Exist" << std::endl;
+                        std::cout << "Invalid Input" << std::endl;
                     }
                 }else if(command == "*"){
                     for(auto itr = org.begin_preorder(); itr != org.end_preorder(); ++itr){
